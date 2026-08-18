@@ -6,7 +6,7 @@
         * { box-sizing: border-box; }
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-            background: #f4f5f7; 
+            background: #000000; 
             margin: 0; 
             padding: 20px; 
             display: flex; 
@@ -15,60 +15,141 @@
             min-height: 100vh;
         }
         .container { 
-            background: white; 
-            padding: 40px 30px; 
-            border-radius: 16px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
             width: 100%; 
             max-width: 500px; 
             text-align: center; 
+            padding: 20px;
         }
-        h2 { color: #1a1a1a; font-size: 24px; margin-top: 0; margin-bottom: 30px; font-weight: 600; }
         
-        /* Button layout for vertical / upright view */
-        .btn-grid { display: flex; flex-direction: column; gap: 15px; }
-        
-        .btn { 
-            display: block; 
-            background: #00D632; 
-            color: white; 
-            padding: 22px; 
-            border-radius: 12px; 
-            text-decoration: none; 
-            font-size: 20px; 
-            font-weight: 700; 
-            transition: transform 0.1s ease;
+        /* Hide screens by default unless they have the 'active' class */
+        .screen {
+            display: none;
         }
-        .btn:active { transform: scale(0.98); }
-        .btn.custom { background: #1a1a1a; }
+        .screen.active {
+            display: block;
+        }
 
-        /* 🔄 HORIZONTAL / LANDSCAPE MODE MAGIC */
+        h1 { 
+            color: #ffffff; 
+            font-size: 32px; 
+            font-weight: 700; 
+            line-height: 1.2;
+            margin: 0 0 10px 0; 
+        }
+        h2 { 
+            color: #ffffff; 
+            font-size: 20px; 
+            font-weight: 400; 
+            margin: 0 0 25px 0; 
+        }
+        
+        /* Layouts */
+        .btn-row { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr 1fr; 
+            gap: 12px; 
+            margin-bottom: 12px;
+        }
+        .vertical-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        /* Buttons */
+        .btn { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            background: #1e70e9; 
+            color: #ffffff; 
+            padding: 25px 10px; 
+            border-radius: 4px; 
+            text-decoration: none; 
+            font-size: 24px; 
+            font-weight: 600; 
+            cursor: pointer;
+            border: none;
+            width: 100%;
+        }
+        .btn.custom { 
+            grid-column: span 3; 
+            padding: 12px 10px; 
+            font-size: 14px; 
+            font-weight: 400;
+        }
+        .btn.next {
+            background: #ffffff;
+            color: #000000;
+            font-size: 20px;
+            padding: 20px;
+        }
+        
+        .btn:active { opacity: 0.8; }
+
         @media (orientation: landscape) {
-            .container { max-width: 750px; padding: 30px; }
-            h2 { margin-bottom: 20px; font-size: 22px; }
-            .btn-grid { 
-                display: grid; 
-                grid-template-columns: 1fr 1fr; /* Splits buttons into a 2x2 grid */
-                gap: 15px; 
-            }
-            .btn { padding: 18px; font-size: 18px; }
+            .container { max-width: 650px; }
+            h1 { font-size: 28px; }
+            .btn { padding: 18px 10px; font-size: 20px; }
+            .btn.custom { padding: 10px 10px; font-size: 13px; }
         }
     </style>
 </head>
 <body>
+
     <div class="container">
-        <h2>It's just gonna ask you a quick question...</h2>
-        <div class="btn-grid">
-            <a class="btn" href="https://cash.app">10% ($1.00)</a>
-            <a class="btn" href="https://cash.app">20% ($20.00)</a>
-            <a class="btn" href="https://cash.app">35% ($35.00)</a>
-            <a class="btn" href="https://cash.app">45% ($45.00)</a>
-            <a class="btn" href="https://cash.app">50% ($50.00)</a>
-            <a class="btn" href="https://cash.app">60% ($60.00)</a>
-            <a class="btn" href="https://cash.app">75% ($75.00)</a>
-            <a class="btn" href="https://cash.app">100% ($100.00)</a>
-            <a class="btn custom" href="https://cash.app">Custom (Min. $10)</a>
+        
+        <!-- SCREEN 1 -->
+        <div id="screen1" class="screen active">
+            <h1>It’s just gonna ask you a few questions on the screen</h1>
+            <h2>Leave A Tip?</h2>
+            <div class="btn-row">
+                <!-- We turn these into 'Next' triggers instead of direct links to drag out the joke -->
+                <button class="btn" onclick="nextScreen(2)">15%</button>
+                <button class="btn" onclick="nextScreen(2)">20%</button>
+                <button class="btn" onclick="nextScreen(2)">25%</button>
+                <button class="btn custom" onclick="nextScreen(2)">Custom</button>
+            </div>
         </div>
+
+        <!-- SCREEN 2: The New Layout (Follow-up Question) -->
+        <div id="screen2" class="screen">
+            <h1>Rate your service experience today</h1>
+            <h2>(Be honest, they are watching you)</h2>
+            <div class="vertical-layout">
+                <button class="btn" onclick="nextScreen(3)">⭐⭐⭐⭐⭐ Amazing</button>
+                <button class="btn" onclick="nextScreen(3)">⭐⭐⭐⭐ Great</button>
+                <button class="btn" onclick="nextScreen(3)">❌ I want the chef fired</button>
+            </div>
+        </div>
+
+        <!-- SCREEN 3: The Final Trap -->
+        <div id="screen3" class="screen">
+            <h1>Confirm and Pay</h1>
+            <h2>Tap below to finalize transaction</h2>
+            <!-- The final button redirects to Cash App -->
+            <button class="btn next" onclick="redirectToCashApp()">Complete Transaction</button>
+        </div>
+
     </div>
+
+    <!-- 🧠 THE JAVASCRIPT LOGIC -->
+    <script>
+        function nextScreen(screenNumber) {
+            // Hide all screens by removing the 'active' class
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            
+            // Show the specific screen requested
+            document.getElementById('screen' + screenNumber).classList.add('active');
+        }
+
+        function redirectToCashApp() {
+            // Replace with your actual handle
+            window.location.href = "https://cash.app"; 
+        }
+    </script>
+
 </body>
 </html>

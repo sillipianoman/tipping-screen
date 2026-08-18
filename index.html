@@ -21,7 +21,6 @@
             padding: 20px;
         }
         
-        /* Hide screens by default unless they have the 'active' class */
         .screen {
             display: none;
         }
@@ -43,7 +42,6 @@
             margin: 0 0 25px 0; 
         }
         
-        /* Layouts */
         .btn-row { 
             display: grid; 
             grid-template-columns: 1fr 1fr 1fr; 
@@ -56,7 +54,6 @@
             gap: 15px;
         }
         
-        /* Buttons */
         .btn { 
             display: flex; 
             align-items: center; 
@@ -87,11 +84,53 @@
         
         .btn:active { opacity: 0.8; }
 
+        /* QR Container Styling */
+        .qr-container {
+            background: white;
+            padding: 15px;
+            display: inline-block;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        .qr-container img {
+            display: block;
+            width: 180px;
+            height: 180px;
+            object-fit: contain; /* Keeps your official QR code looking perfect */
+        }
+
+        /* 🔄 50/50 SPLIT FOR HORIZONTAL VIEW */
         @media (orientation: landscape) {
-            .container { max-width: 650px; }
-            h1 { font-size: 28px; }
-            .btn { padding: 18px 10px; font-size: 20px; }
+            .container { max-width: 800px; }
+            h1 { font-size: 26px; }
+            .btn { padding: 18px 10px; font-size: 18px; }
             .btn.custom { padding: 10px 10px; font-size: 13px; }
+            
+            #screen3-split {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 40px;
+            }
+            
+            .split-left {
+                flex: 1;
+                text-align: left;
+            }
+            
+            .split-right {
+                flex: 1;
+                display: flex;
+                justify-content: center;
+            }
+            
+            .qr-container {
+                margin-top: 0; 
+            }
+            .qr-container img {
+                width: 200px; 
+                height: 200px;
+            }
         }
     </style>
 </head>
@@ -101,10 +140,9 @@
         
         <!-- SCREEN 1 -->
         <div id="screen1" class="screen active">
-            <h1>It’s just gonna ask you a few questions on the screen</h1>
+            <h1>it’s just gonna ask you a few questions on the screen</h1>
             <h2>Leave A Tip?</h2>
             <div class="btn-row">
-                <!-- We turn these into 'Next' triggers instead of direct links to drag out the joke -->
                 <button class="btn" onclick="nextScreen(2)">15%</button>
                 <button class="btn" onclick="nextScreen(2)">20%</button>
                 <button class="btn" onclick="nextScreen(2)">25%</button>
@@ -112,41 +150,47 @@
             </div>
         </div>
 
-        <!-- SCREEN 2: The New Layout (Follow-up Question) -->
+        <!-- SCREEN 2 -->
         <div id="screen2" class="screen">
             <h1>Rate your service experience today</h1>
-            <h2>(Be honest, they are watching you)</h2>
+            <h2>(the people in the walls are watching you)</h2>
             <div class="vertical-layout">
-                <button class="btn" onclick="nextScreen(3)">⭐⭐⭐⭐⭐ wow amazing so cool wow</button>
-                <button class="btn" onclick="nextScreen(3)">⭐⭐⭐⭐ it would be so awesome</button>
-                <button class="btn" onclick="nextScreen(3)">❌ this chef is straight ASS</button>
+                <button class="btn" onclick="nextScreen(3)">⭐⭐⭐⭐⭐ it would be so awesome</button>
+                <button class="btn" onclick="nextScreen(3)">⭐⭐⭐ meh</button>
+                <button class="btn" onclick="nextScreen(3)">❌ straight ass bro</button>
             </div>
         </div>
 
-        <!-- SCREEN 3: The Final Trap -->
+        <!-- SCREEN 3 -->
         <div id="screen3" class="screen">
-            <h1>Confirm and Pay</h1>
-            <h2>Tap below to finalize transaction</h2>
-            <!-- The final button redirects to Cash App -->
-            <button class="btn next" onclick="redirectToCashApp()">Complete Transaction</button>
+            <div id="screen3-split">
+                <div class="split-left">
+                    <h1>Confirm and Pay</h1>
+                    <h2>Tap to finish transaction or scan the code</h2>
+                    <button class="btn next" onclick="redirectToCashApp()">Complete Transaction</button>
+                </div>
+                
+                <div class="split-right">
+                    <div class="qr-container">
+                        <!-- 🔄 LOOKS FOR YOUR LOCAL UPLOADED FILE NOW -->
+                        <img src="qr.png" alt="Scan to pay">
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>
 
-    <!-- 🧠 THE JAVASCRIPT LOGIC -->
     <script>
         function nextScreen(screenNumber) {
-            // Hide all screens by removing the 'active' class
             document.querySelectorAll('.screen').forEach(screen => {
                 screen.classList.remove('active');
             });
-            
-            // Show the specific screen requested
             document.getElementById('screen' + screenNumber).classList.add('active');
         }
 
         function redirectToCashApp() {
-            // Replace with your actual handle
+            // Your link fallback remains active if they press the button
             window.location.href = "https://cash.app/$therealpianoman"; 
         }
     </script>
